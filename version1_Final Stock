@@ -1,0 +1,138 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Sep 30 14:46:55 2022
+
+@author: Shaileshbhai
+"""
+
+import pandas as pd 
+import numpy as np
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.express as px
+from dash.dependencies import Input, Output
+import plotly.graph_objects as go
+import dash_bootstrap_components as dbc
+
+df = pd.read_csv(r"https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv",parse_dates=["Date"])
+df
+df.info()
+df.isnull().sum()  
+df1_copy = df.copy() 
+df1_copy
+# df1_copy.set_index("Date",inplace = True) # if index is true then we can't get DATE COLUMN 
+# x1 = df.iloc[:,:-1]
+
+
+app =dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP],
+                meta_tags=[{'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0'}])
+                           
+app.layout =html.Div(
+    children =[
+    dbc.Row(dbc.Col(html.Label("STockMarket Data"))),#Row 1
+    
+    dbc.Row(children =[dbc.Col(children=[html.Label("List1"),
+        dcc.Dropdown(id ="dropdown1",
+                     options =[{"label":"AAPL.Open",
+                                "value":"AAPL.Open"},
+                               
+                               {"label":"AAPL.High",
+                                "value":"AAPL.High"},
+                               
+                               {"label":"AAPL.Low",
+                                "value":"AAPL.Low"},
+                               
+                               {"label":"AAPL.Close",
+                                "value":"AAPL.Close"},
+                               
+                               {"label":"Date",
+                                "value":"Date"},
+                               
+                               ]
+                     )],
+                width = {"size":3,"offest":0,"order":1}
+                ),
+        dbc.Col(
+            dcc.Dropdown(id ="dropdown2",
+                         options =[{"label":"AAPL.Open",
+                                    "value":"AAPL.Open"},
+                                   
+                                   {"label":"AAPL.High",
+                                    "value":"AAPL.High"},
+                                   
+                                   {"label":"AAPL.Low",
+                                    "value":"AAPL.Low"},
+                                   
+                                   {"label":"AAPL.Close",
+                                    "value":"AAPL.Close"},
+                                   ]
+                         ),
+                    # style={"textAlign":"center"},
+                    width = {"size":3,"offest":0,"order":2}
+                    )
+            ]
+        ),
+    
+    dbc.Row(children =[dbc.Col(
+        dcc.Dropdown(id ="dropdown3",
+                     options =[
+                             {"label":"2015",
+                              "value":"2015"},
+                               
+                             {"label":"2016",
+                              "value":"2016"},
+                               
+                              {"label":"2017",
+                               "value":"2017"},
+                               
+                              {"label":"2018",
+                               "value":"2018"},
+                               
+                             {"label":"2019",
+                             "value":"2019"},
+                               
+                               ]
+                     ),
+                width = {"size":3,"offest":0,"order":1}
+                ),
+        dbc.Col(
+            dcc.RadioItems(id ="Radiobutton1",
+                         options =[{"label":"Decreasing",
+                                    "value":"Decreasing"},
+                                   
+                                   {"label":"Increasing",
+                                    "value":"Increasing"},
+                                   
+                                   ]
+                         ),
+                    # style={"textAlign":"center"},
+                    width = {"size":3,"offest":0,"order":2}
+                    )
+            ]
+        ),
+    dbc.Row([dbc.Col(dcc.Graph(id ="fig1")),
+             dbc.Col(dcc.Graph(id ="fig2"))
+             ])
+    
+    ]
+)
+
+
+@app.callback(Output("fig1","figure"),
+              Input("dropdown1","value"))
+
+def update_graph1(dropdown):
+    fig1 =px.line(df,x ="Date",y=dropdown)
+    return fig1
+
+if __name__ == "__main__":
+    app.run()
+
+
+
+
+
+
+
