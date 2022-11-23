@@ -2,11 +2,11 @@
 
 #******************************** database connectivity   ********************************
 
-import mysql.connector as mysql
-import pandas as pd
+# import mysql.connector as mysql
+# import pandas as pd
 
-db_con =mysql.connect(host ="localhost",user="root",passwd ="root",
-                      database ="d1")
+# db_con =mysql.connect(host ="localhost",user="root",passwd ="root",
+#                       database ="d1")
 
 # optional Part
 # my_cur =db_con.cursor()
@@ -15,11 +15,11 @@ db_con =mysql.connect(host ="localhost",user="root",passwd ="root",
 # for x in my_cur:
 #     print(x)
     
-query = 'select * from apple_stock'
+# query = 'select * from apple_stock'
 
-df = pd.read_sql(query, con = db_con,parse_dates=["Date"],)
-print(df)
-df.info()
+# df = pd.read_sql(query, con = db_con,parse_dates=["Date"],)
+# print(df)
+# df.info()
 
 # *********************** Stock Market *************************************************
 
